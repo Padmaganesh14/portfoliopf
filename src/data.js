@@ -12,7 +12,7 @@ export const profileData = {
             institution: "B.S Abdur Rahman Crescent Institute of Science and Technology",
             period: "2024 – 2028",
             location: "Chennai",
-            cgpa: "8.85 (till 3rd semester)"
+            cgpa: "8.76(till 3rd semester)"
         }
     ],
     projects: [
