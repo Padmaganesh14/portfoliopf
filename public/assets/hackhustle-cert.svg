@@ -1,0 +1,52 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <defs>
+    <linearGradient id="certGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3d2817;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6b4423;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="600" fill="url(#certGradient3)"/>
+  
+  <!-- Decorative Border -->
+  <rect x="30" y="30" width="740" height="540" fill="none" stroke="#ffd700" stroke-width="4" rx="20"/>
+  <rect x="40" y="40" width="720" height="520" fill="none" stroke="#ffd700" stroke-width="1" rx="15" opacity="0.5"/>
+  
+  <!-- Trophy Icon -->
+  <text x="400" y="100" font-family="Arial, sans-serif" font-size="60" text-anchor="middle" fill="#ffd700">🏆</text>
+  
+  <!-- Header -->
+  <text x="400" y="170" font-family="Georgia, serif" font-size="40" font-weight="bold" fill="#ffd700" text-anchor="middle">
+    HACKATHON PARTICIPATION
+  </text>
+  
+  <!-- Event Name -->
+  <text x="400" y="230" font-family="Georgia, serif" font-size="32" font-weight="bold" fill="#ffffff" text-anchor="middle">
+    Hack Hustle 2.0
+  </text>
+  
+  <!-- Organizer -->
+  <text x="400" y="280" font-family="Arial, sans-serif" font-size="18" fill="#d0d0d0" text-anchor="middle">
+    Saveetha Engineering College
+  </text>
+  
+  <!-- Achievement -->
+  <rect x="100" y="320" width="600" height="80" fill="none" stroke="#ffd700" stroke-width="2" rx="10" opacity="0.5"/>
+  <text x="400" y="350" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffd700" text-anchor="middle">
+    Participated in a 24-hour hackathon
+  </text>
+  <text x="400" y="380" font-family="Arial, sans-serif" font-size="16" fill="#ffffff" text-anchor="middle">
+    Collaborated on innovative technical solutions in competitive environment
+  </text>
+  
+  <!-- Year -->
+  <text x="400" y="480" font-family="Arial, sans-serif" font-size="18" fill="#ffd700" text-anchor="middle" font-weight="bold">
+    2026
+  </text>
+  
+  <!-- Category -->
+  <text x="400" y="530" font-family="Arial, sans-serif" font-size="14" fill="#a0a0a0" text-anchor="middle" font-style="italic">
+    Certificate of Participation & Recognition
+  </text>
+</svg>

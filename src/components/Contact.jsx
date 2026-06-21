@@ -20,41 +20,79 @@ export default function Contact() {
     const formRef = useRef(null);
     const [status, setStatus] = useState('idle'); // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState('');
+const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (status === 'loading') return;
+    if (status === 'loading') return;
 
-        setStatus('loading');
-        setErrorMsg('');
+    setStatus('loading');
+    setErrorMsg('');
 
-        try {
-            await emailjs.sendForm(
-                EMAILJS_SERVICE_ID,
-                EMAILJS_TEMPLATE_ID,
-                formRef.current,
-                EMAILJS_PUBLIC_KEY
-            );
-            setStatus('success');
+    // Debug logs
+    console.log("SERVICE:", EMAILJS_SERVICE_ID);
+    console.log("TEMPLATE:", EMAILJS_TEMPLATE_ID);
+    console.log("PUBLIC:", EMAILJS_PUBLIC_KEY);
+
+    // Check env variables
+    if (
+        !EMAILJS_SERVICE_ID ||
+        !EMAILJS_TEMPLATE_ID ||
+        !EMAILJS_PUBLIC_KEY
+    ) {
+        console.error("Missing EmailJS environment variables");
+
+        setErrorMsg("EmailJS environment variables missing");
+        setStatus("error");
+
+        return;
+    }
+
+    try {
+        const response = await emailjs.sendForm(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            formRef.current,
+            EMAILJS_PUBLIC_KEY
+        );
+
+        console.log("SUCCESS:", response);
+
+        setStatus('success');
+
+        if (formRef.current) {
             formRef.current.reset();
-            // Reset to idle after 5 seconds
-            setTimeout(() => setStatus('idle'), 5000);
-        } catch (err) {
-            console.error('EmailJS error:', err);
-            // Detect broken OAuth / Gmail grant errors
-            const isAuthError = err?.text?.toLowerCase().includes('invalid grant')
-                || err?.text?.toLowerCase().includes('gmail')
-                || err?.status === 412;
-            setErrorMsg(
-                isAuthError
-                    ? 'EMAIL_API_DOWN'
-                    : (err?.text || 'Something went wrong. Please try again.')
-            );
-            setStatus('error');
-            setTimeout(() => setStatus('idle'), 8000);
         }
-    };
 
+        setTimeout(() => {
+            setStatus('idle');
+        }, 5000);
+
+    } catch (err) {
+
+        console.error("FULL ERROR:", err);
+        console.error("STATUS:", err?.status);
+        console.error("TEXT:", err?.text);
+
+        const errorText = err?.text || "Something went wrong";
+
+        const isAuthError =
+            errorText.toLowerCase().includes('invalid grant') ||
+            errorText.toLowerCase().includes('gmail') ||
+            err?.status === 412;
+
+        setErrorMsg(
+            isAuthError
+                ? 'EMAIL_API_DOWN'
+                : errorText
+        );
+
+        setStatus('error');
+
+        setTimeout(() => {
+            setStatus('idle');
+        }, 8000);
+    }
+};
     return (
         <section id="contact" className="py-24 relative overflow-hidden">
             <div className="container mx-auto px-6">

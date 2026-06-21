@@ -58,7 +58,7 @@ function ParticleCanvas({ mouseRef }) {
     window.addEventListener('resize', resize);
 
     // Smaller pool — sweet-spot between density and frame rate
-    const COUNT = 75;
+    const COUNT = 35;
     const particles = Array.from({ length: COUNT }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
@@ -71,9 +71,8 @@ function ParticleCanvas({ mouseRef }) {
 
     let animId;
     const animate = () => {
-      // Fade-clear instead of hard clear — leaves subtle trails for smoothness
-      ctx.fillStyle = 'rgba(2, 6, 23, 0.18)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Clear instead of fade for better performance
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const mx = mouseRef.current?.x ?? -9999;
       const my = mouseRef.current?.y ?? -9999;
@@ -160,12 +159,6 @@ const SHAPES = [
   { circle: false, size: 42, x: '91%', y: '14%', c: 'secondary', d: 1.5, dur: 7.2  },
   { circle: true,  size: 22, x: '86%', y: '72%', c: 'primary',   d: 0.7, dur: 9.4  },
   { circle: false, size: 32, x: '4%',  y: '76%', c: 'secondary', d: 2.1, dur: 6.8  },
-  { circle: true,  size: 16, x: '50%', y: '90%', c: 'primary',   d: 1.1, dur: 10.2 },
-  { circle: false, size: 52, x: '16%', y: '52%', c: 'secondary', d: 3.0, dur: 8.8  },
-  { circle: true,  size: 28, x: '76%', y: '38%', c: 'primary',   d: 0.9, dur: 7.8  },
-  { circle: false, size: 20, x: '40%', y: '7%',  c: 'secondary', d: 2.4, dur: 9.8  },
-  { circle: true,  size: 12, x: '62%', y: '82%', c: 'secondary', d: 1.8, dur: 11.0 },
-  { circle: false, size: 36, x: '30%', y: '25%', c: 'primary',   d: 0.3, dur: 8.0  },
 ];
 
 function FloatingShapes({ bgX, bgY }) {
@@ -234,6 +227,7 @@ function LightStreaks() {
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 export default function Hero() {
   const mouseRef = useRef({ x: -9999, y: -9999 });
+  const tickingRef = useRef(false);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -248,10 +242,16 @@ export default function Hero() {
   const bgY  = useTransform(springY, [-400, 400], [7,  -7]);
 
   const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    mouseX.set(e.clientX - rect.left - rect.width / 2);
-    mouseY.set(e.clientY - rect.top - rect.height / 2);
+    if (!tickingRef.current) {
+      requestAnimationFrame(() => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        mouseX.set(e.clientX - rect.left - rect.width / 2);
+        mouseY.set(e.clientY - rect.top - rect.height / 2);
+        tickingRef.current = false;
+      });
+      tickingRef.current = true;
+    }
   };
 
   const handleMouseLeave = () => {
@@ -296,7 +296,7 @@ export default function Hero() {
       <ParticleCanvas mouseRef={mouseRef} />
 
       {/* Light streaks */}
-      <LightStreaks />
+      {/* <LightStreaks /> */}
 
       {/* Floating geometric shapes — slow parallax layer */}
       <FloatingShapes bgX={bgX} bgY={bgY} />
@@ -380,6 +380,7 @@ export default function Hero() {
                 <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
               </a>
               <a
+<<<<<<< HEAD
             href="/resume.pdf"
            download="Padma_Ganesh_Resume.pdf"
            className="btn btn-outline flex items-center gap-2 group hover:border-primary text-base px-8 py-4"
@@ -387,6 +388,18 @@ export default function Hero() {
                 <Download size={18} className="group-hover:-translate-y-0.5 transition-transform duration-300" />
                 Download Resume
               </a>
+=======
+  href="/resume.pdf"
+  download="Padma_Ganesh_Resume.pdf"
+  className="btn btn-outline flex items-center gap-2 group hover:border-primary text-base px-8 py-4"
+>
+  <Download
+    size={18}
+    className="group-hover:-translate-y-0.5 transition-transform duration-300"
+  />
+  Download Resume
+</a>
+>>>>>>> ab0eb73 (Added certificates)
             </motion.div>
 
             {/* Socials */}

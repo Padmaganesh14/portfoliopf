@@ -16,7 +16,7 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
 
     // Active section tracker
-    const sections = ['about', 'projects', 'skills', 'experience', 'contact'];
+    const sections = ['about', 'projects', 'skills', 'achievements', 'experience', 'contact'];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -40,6 +40,7 @@ export default function Navbar() {
     { name: 'About', href: '#about' },
     { name: 'Projects', href: '#projects' },
     { name: 'Skills', href: '#skills' },
+    { name: 'Achievements', href: '#achievements' },
     { name: 'Experience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
   ];
@@ -119,7 +120,7 @@ export default function Navbar() {
               <Linkedin size={19} />
             </a>
             <a
-              href="/resume (1).pdf"
+              href="/resume.pdf"
               download="Padma_Ganesh_Resume.pdf"
               className="ml-2 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-primary to-secondary text-white hover:shadow-[0_4px_20px_#6366f155] hover:-translate-y-0.5 transition-all duration-300"
             >
@@ -159,7 +160,7 @@ export default function Navbar() {
             ))}
             <li className="pt-3 border-t border-white/8 mt-2">
               <a
-                href="/resume (1).pdf"
+                href="/resume.pdf"
                 download="Padma_Ganesh_Resume.pdf"
                 onClick={() => setIsOpen(false)}
                 className="flex items-center gap-2 px-4 py-3 text-base font-semibold text-primary hover:text-white transition-colors"

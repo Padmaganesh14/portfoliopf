@@ -117,6 +117,12 @@ export default function Experience() {
                     </h3>
                     <p className="text-muted font-medium mb-4">{h.event} · {h.year}</p>
 
+                    {h.achievement && (
+                      <p className="text-primary font-semibold mb-3">
+                        {h.achievement}
+                      </p>
+                    )}
+
                     <div className="bg-white/5 border border-white/8 rounded-xl p-4">
                       <p className="text-white font-semibold text-sm mb-1">🚀 {h.project}</p>
                       <p className="text-muted text-sm leading-relaxed">{h.description}</p>

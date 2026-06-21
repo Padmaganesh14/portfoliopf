@@ -49,21 +49,40 @@ export const profileData = {
     ],
     certificates: [
         {
-            title: "Advanced C++ Training",
-            issuer: "IIT Bombay (EduPyramids, SINE)",
-            date: "Apr 2025"
+            title: "Deloitte Data Analytics Job Simulation",
+            issuer: "Forage",
+            file: "/Deloitte Data Analytics Job Simulation.pdf",
+            image: "/certificate/deloitte.jpg",
+            year: "2026",
+            category: "Data Analytics",
+            description: "Analyzed business and forensic datasets, applied data cleaning, interpretation, and reporting techniques."
         },
         {
-            title: "Deloitte Data Analytics Job Simulation",
-            issuer: "Deloitte (via Forage)",
-            date: "2026",
-            summary: "Analyzed business and forensic datasets, applied data cleaning, interpretation, and reporting techniques."
+            title: "RDBMS PostgreSQL Training",
+            issuer: "EduPyramids, SINE, IIT Bombay",
+            file: "/PADMA-GANESH-P-Participant-Certificate.pdf",
+            image: "/certificate/postgresql.jpg",
+            year: "2026",
+            category: "Database Management",
+            score: "92.5%",
+            description: "Comprehensive training in Relational Database Management Systems and PostgreSQL fundamentals."
+        },
+        {
+            title: "Hack Hustle 2.0",
+            issuer: "Saveetha Engineering College",
+            file: "/hackhustle 2.0.pdf",
+            image: "/certificate/hackhustle%202.0.jpg",
+            year: "2026",
+            category: "Hackathon Participation",
+            description: "24-hour hackathon participation with innovative technical solutions in a competitive environment."
         },
         {
             title: "Web Development Fundamentals",
             issuer: "IBM SkillsBuild",
-            date: "2026",
-            summary: "Gained foundational knowledge of HTML, CSS, and core web technologies, following best practices and responsive design principles."
+            image: "/certificate/ibm.jfif",
+            year: "2026",
+            category: "Web Development",
+            description: "Gained foundational knowledge of HTML, CSS, and core web technologies, following best practices and responsive design principles."
         }
     ],
     skills: {
@@ -73,6 +92,14 @@ export const profileData = {
         other: ["LeetCode (100+ problems solved)", "Git"]
     },
     hackathons: [
+        {
+            name: "Saveetha 24-Hour National Hackathon",
+            event: "Saveetha Institute of Medical and Technical Sciences",
+            year: "2026",
+            achievement: "Top 60 Finalist among 4000+ Teams",
+            project: "Full-Stack & Problem-Solving Solutions",
+            description: "Selected as a Top 60 finalist in the Saveetha 24-Hour National Hackathon from over 4000 participating teams. Developed innovative full-stack and problem-solving solutions under intensive time constraints while collaborating in a competitive environment."
+        },
         {
             name: "Bharat Build Hackathon",
             event: "SRM Institute of Science and Technology",
