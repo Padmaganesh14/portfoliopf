@@ -180,7 +180,7 @@ export default function Skills() {
           {[
             { value: '3+', label: 'Projects Built' },
             { value: '100+', label: 'LeetCode Solved' },
-            { value: '8.85', label: 'CGPA Score' },
+            { value: '8.76', label: 'CGPA Score' },
             { value: '5+', label: 'Technologies' },
           ].map((stat, i) => (
             <motion.div

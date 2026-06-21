@@ -6,15 +6,15 @@ export const profileData = {
     linkedin: "https://linkedin.com", // Placeholder as none provided
     github: "https://github.com", // Placeholder as none provided
     summary: "Passionate and results-driven Computer Science student with strong problem-solving skills and a keen interest in building efficient, real-world technical solutions. Committed to delivering impactful work, collaborating effectively within teams, and continuously improving technical expertise. Eager to grow in dynamic technology-driven environments, upskill consistently, and contribute meaningfully to organizational success.",
-    education: [
-        {
-            degree: "B.Tech CSE",
-            institution: "B.S Abdur Rahman Crescent Institute of Science and Technology",
-            period: "2024 – 2028",
-            location: "Chennai",
-            cgpa: "8.76(till 3rd semester)"
-        }
-    ],
+   education: [
+    {
+        degree: "B.Tech CSE",
+        institution: "B.S Abdur Rahman Crescent Institute of Science and Technology",
+        period: "2024 – 2028",
+        location: "Chennai",
+        cgpa: "8.76 (till 3rd semester)"
+    }
+], 
     projects: [
         {
             title: "Patient Health Record Management System",
