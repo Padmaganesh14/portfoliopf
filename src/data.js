@@ -52,7 +52,7 @@ export const profileData = {
             title: "Deloitte Data Analytics Job Simulation",
             issuer: "Forage",
             file: "/Deloitte Data Analytics Job Simulation.pdf",
-            image: "/certificates/deloitte.png",
+            image: "/certificates/deloitte.jpg",
             year: "2026",
             category: "Data Analytics",
             description: "Analyzed business and forensic datasets, applied data cleaning, interpretation, and reporting techniques."
@@ -61,7 +61,7 @@ export const profileData = {
             title: "RDBMS PostgreSQL Training",
             issuer: "EduPyramids, SINE, IIT Bombay",
             file: "/PADMA-GANESH-P-Participant-Certificate.pdf",
-            image: "/certificates/postgresql.png",
+            image: "/certificates/postgresql.jpg",
             year: "2026",
             category: "Database Management",
             score: "92.5%",
@@ -71,7 +71,7 @@ export const profileData = {
             title: "Hack Hustle 2.0",
             issuer: "Saveetha Engineering College",
             file: "/hackhustle 2.0.pdf",
-            image: "/certificates/hackhustle 2.0.png",
+            image: "/certificates/hackhustle 2.0.jpg",
             year: "2026",
             category: "Hackathon Participation",
             description: "24-hour hackathon participation with innovative technical solutions in a competitive environment."
