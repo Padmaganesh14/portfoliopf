@@ -380,57 +380,16 @@ export default function Hero() {
                 <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
               </a>
               <a
-<<<<<<< HEAD
-            href="/resume.pdf"
-           download="Padma_Ganesh_Resume.pdf"
-           className="btn btn-outline flex items-center gap-2 group hover:border-primary text-base px-8 py-4"
->
+                href="/resume.pdf"
+                download="Padma_Ganesh_Resume.pdf"
+                className="btn btn-outline flex items-center gap-2 group hover:border-primary text-base px-8 py-4"
+              >
                 <Download size={18} className="group-hover:-translate-y-0.5 transition-transform duration-300" />
                 Download Resume
               </a>
-=======
-  href="/resume.pdf"
-  download="Padma_Ganesh_Resume.pdf"
-  className="btn btn-outline flex items-center gap-2 group hover:border-primary text-base px-8 py-4"
->
-  <Download
-    size={18}
-    className="group-hover:-translate-y-0.5 transition-transform duration-300"
-  />
-  Download Resume
-</a>
->>>>>>> ab0eb73 (Added certificates)
             </motion.div>
-
-            {/* Socials */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1.0 }}
-              className="flex items-center justify-center gap-6"
-            >
-              <a href={profileData.github} target="_blank" rel="noopener noreferrer" className="social-icon-btn">
-                <Github size={22} />
-              </a>
-              <div className="w-px h-6 bg-white/10" />
-              <a href={profileData.linkedin} target="_blank" rel="noopener noreferrer" className="social-icon-btn">
-                <Linkedin size={22} />
-              </a>
-            </motion.div>
-
           </div>
         </div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        animate={{ y: [0, 12, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        style={{ position: 'absolute', bottom: 40, left: '50%', translateX: '-50%', zIndex: 10 }}
-        className="flex flex-col items-center gap-2 text-muted -translate-x-1/2"
-      >
-        <span className="text-xs uppercase tracking-[0.2em] font-medium">Scroll</span>
-        <ArrowDown size={16} />
       </motion.div>
     </section>
   );
