@@ -380,10 +380,10 @@ export default function Hero() {
                 <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
               </a>
               <a
-                href="/resume (1).pdf"
-                download="Padma_Ganesh_Resume.pdf"
-                className="btn btn-outline flex items-center gap-2 group hover:border-primary text-base px-8 py-4"
-              >
+            href="/resume.pdf"
+           download="Padma_Ganesh_Resume.pdf"
+           className="btn btn-outline flex items-center gap-2 group hover:border-primary text-base px-8 py-4"
+>
                 <Download size={18} className="group-hover:-translate-y-0.5 transition-transform duration-300" />
                 Download Resume
               </a>
