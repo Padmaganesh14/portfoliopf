@@ -3,54 +3,31 @@ import { useEffect, useRef, useState } from 'react';
 /**
  * ScrollScrubVideo
  *
- * High-performance, jitter-free scroll-controlled video background.
- * - Single requestAnimationFrame animation loop
- * - requestAnimationFrame throttled passive scroll listener
- * - Zero React state updates on scroll (pure ref-driven calculations)
- * - Threshold check (Math.abs(difference) > 0.003) to prevent micro-seeking stutter
- * - Preloaded with instant seek on mount (frame 0)
- * - Safe metadata & duration guards (never NaN or Infinity)
- * - Respects prefers-reduced-motion
+ * Ultra-smooth, stutter-free scroll-controlled background video.
+ * - Hardware-synchronized decoder seeking (waits for 'seeked' event before next seek)
+ * - Safe fallback timeout to prevent any decoder lockup
+ * - Fast linear interpolation (diff * 0.22) for responsive scrubbing
+ * - Lightweight readability overlays (~30%) for bright, vibrant visuals
+ * - Fixed background (z-0, pointer-events-none)
  */
-export default function ScrollScrubVideo({
-  opacity = 0.50,
-  smoothing = 0.08,
-}) {
+export default function ScrollScrubVideo() {
   const videoRef = useRef(null);
   const targetTimeRef = useRef(0);
+  const isSeekingRef = useRef(false);
   const animationFrameRef = useRef(null);
-  const scrollRafRef = useRef(null);
+  const seekSafetyTimeoutRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const SMOOTHING = smoothing;
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Strict no-autoplay requirement: video is controlled purely by scroll
+    // Strict no-autoplay: playback is driven entirely by scroll position
     video.pause();
     video.currentTime = 0;
 
-    // Respect reduced-motion accessibility preference
-    const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (prefersReducedMotion) {
-      return;
-    }
-
-    const updateTargetTime = () => {
-      if (
-        !video ||
-        !video.duration ||
-        !Number.isFinite(video.duration) ||
-        video.duration <= 0
-      ) {
-        return;
-      }
-
+    // Calculate target video timestamp based on overall page scroll
+    const handleScroll = () => {
       const scrollTop =
         window.scrollY ||
         window.pageYOffset ||
@@ -59,60 +36,68 @@ export default function ScrollScrubVideo({
       const maxScroll =
         document.documentElement.scrollHeight - window.innerHeight;
 
-      if (maxScroll <= 0) {
-        targetTimeRef.current = 0;
+      if (maxScroll <= 0 || !video.duration || !Number.isFinite(video.duration)) {
         return;
       }
 
-      // Convert page scroll progress (0 to 1)
       const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
-
-      // Map progress to video duration
       targetTimeRef.current = progress * video.duration;
     };
 
-    // RAF-throttled scroll handler to prevent excessive calculation during fast scrolls
-    const handleScroll = () => {
-      if (!scrollRafRef.current) {
-        scrollRafRef.current = requestAnimationFrame(() => {
-          updateTargetTime();
-          scrollRafRef.current = null;
-        });
-      }
-    };
-
-    const handleMetadata = () => {
-      setIsLoaded(true);
-      if (video.duration && Number.isFinite(video.duration)) {
-        updateTargetTime();
-      }
-    };
-
-    // Single requestAnimationFrame loop for smooth linear interpolation
+    // Hardware-synchronized seeking loop:
+    // Only seeks when the previous seek has completed to eliminate lag/stutter
     const updateVideo = () => {
+      const vid = videoRef.current;
+
       if (
-        video &&
-        video.readyState >= 2 &&
-        Number.isFinite(video.duration) &&
-        video.duration > 0
+        vid &&
+        !vid.seeking &&
+        !isSeekingRef.current &&
+        vid.readyState >= 2 &&
+        Number.isFinite(vid.duration) &&
+        vid.duration > 0
       ) {
         const target = targetTimeRef.current;
-        const current = video.currentTime;
+        const current = vid.currentTime;
         const difference = target - current;
 
-        // Only seek when difference is meaningful to prevent micro-seeking lag
-        if (Math.abs(difference) > 0.003) {
-          const nextTime = current + difference * SMOOTHING;
-          video.currentTime = Math.min(Math.max(nextTime, 0), video.duration);
+        // Threshold of 0.02s (~half a frame) prevents redundant micro-seeking
+        if (Math.abs(difference) > 0.02) {
+          isSeekingRef.current = true;
+          const nextTime = Math.min(Math.max(current + difference * 0.22, 0), vid.duration);
+          vid.currentTime = nextTime;
+
+          // Decoder safety watchdog: resets seeking lock if browser misses 'seeked' event
+          if (seekSafetyTimeoutRef.current) clearTimeout(seekSafetyTimeoutRef.current);
+          seekSafetyTimeoutRef.current = setTimeout(() => {
+            isSeekingRef.current = false;
+          }, 45);
         }
       }
 
       animationFrameRef.current = requestAnimationFrame(updateVideo);
     };
 
+    const handleSeeked = () => {
+      isSeekingRef.current = false;
+      if (seekSafetyTimeoutRef.current) {
+        clearTimeout(seekSafetyTimeoutRef.current);
+      }
+    };
+
+    const handleMetadata = () => {
+      setIsLoaded(true);
+      if (video.duration && Number.isFinite(video.duration)) {
+        targetTimeRef.current = 0;
+        video.currentTime = 0;
+        handleScroll();
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
 
+    video.addEventListener('seeked', handleSeeked);
     video.addEventListener('loadedmetadata', handleMetadata);
     video.addEventListener('canplay', handleMetadata);
     video.addEventListener('loadeddata', handleMetadata);
@@ -128,80 +113,46 @@ export default function ScrollScrubVideo({
       window.removeEventListener('resize', handleScroll);
 
       if (video) {
+        video.removeEventListener('seeked', handleSeeked);
         video.removeEventListener('loadedmetadata', handleMetadata);
         video.removeEventListener('canplay', handleMetadata);
         video.removeEventListener('loadeddata', handleMetadata);
       }
 
-      if (scrollRafRef.current) {
-        cancelAnimationFrame(scrollRafRef.current);
-      }
-
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+
+      if (seekSafetyTimeoutRef.current) {
+        clearTimeout(seekSafetyTimeoutRef.current);
+      }
     };
-  }, [SMOOTHING]);
+  }, []);
 
   return (
     <div
       aria-hidden="true"
-      className="scroll-video-container fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden select-none bg-[#02040a]"
+      className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden select-none bg-[#03060d]"
     >
-      {/* ─── SCROLL-CONTROLLED BACKGROUND VIDEO ─── */}
+      {/* ─── FULL-SCREEN CODING VIDEO ─── */}
       <video
         ref={videoRef}
         muted
         playsInline
         preload="auto"
         aria-hidden="true"
-        className="w-full h-full object-cover object-center pointer-events-none transition-opacity duration-400 ease-out"
+        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-opacity duration-500 ease-out"
         style={{
-          opacity: isLoaded ? opacity : 0,
+          opacity: isLoaded ? 0.88 : 0,
         }}
       >
         <source src="/videos/codingvideo.mp4" type="video/mp4" />
       </video>
 
-      {/* ─── LAYER 1: CINEMATIC DARK READABILITY OVERLAYS ─── */}
-      <div
-        className="video-dark-overlay absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            linear-gradient(
-              90deg,
-              rgba(2, 4, 10, 0.90) 0%,
-              rgba(2, 4, 10, 0.70) 40%,
-              rgba(2, 4, 10, 0.65) 70%,
-              rgba(2, 4, 10, 0.82) 100%
-            ),
-            linear-gradient(
-              180deg,
-              rgba(0, 0, 0, 0.45) 0%,
-              rgba(0, 0, 0, 0.65) 100%
-            )
-          `,
-        }}
-      />
+      {/* ─── LIGHTWEIGHT READABILITY OVERLAYS (Bright & Vibrant ~30%) ─── */}
+      <div className="absolute inset-0 bg-[#050816]/30 pointer-events-none" />
 
-      {/* ─── LAYER 2: PURPLE / BLUE GLOW OVERLAYS ─── */}
-      <div
-        className="video-glow-overlay absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(
-              circle at 75% 45%,
-              rgba(80, 90, 255, 0.10),
-              transparent 40%
-            ),
-            radial-gradient(
-              circle at 20% 70%,
-              rgba(150, 60, 255, 0.08),
-              transparent 40%
-            )
-          `,
-        }}
-      />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050816]/20 via-transparent to-[#050816]/35 pointer-events-none" />
     </div>
   );
 }

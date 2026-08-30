@@ -11,7 +11,7 @@ import Certificates from './components/Certificates';
 import Contact from './components/Contact';
 import IntroScreen from './components/IntroScreen';
 import DeveloperBackground from './components/DeveloperBackground';
-import ScrollScrubVideo from './components/ScrollScrubVideo';
+import BackgroundVideo from './components/BackgroundVideo';
 
 function App() {
   const [showIntro, setShowIntro] = useState(true);
@@ -31,9 +31,9 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-[#070A0F] text-[#F5F7FA] min-h-screen selection:bg-purple-500/30 selection:text-white relative">
-      {/* Scroll-Controlled Coding Video Background */}
-      <ScrollScrubVideo />
+    <div className="bg-transparent text-[#F5F7FA] min-h-screen selection:bg-purple-500/30 selection:text-white relative">
+      {/* Reliable Hardware-Accelerated Background Video */}
+      <BackgroundVideo />
 
       {/* Coder-Focused Ambient Background */}
       <DeveloperBackground />
