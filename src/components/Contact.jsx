@@ -71,7 +71,9 @@ export default function Contact() {
         reply_to: from_email.trim(),
       };
 
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      await emailjs.send(serviceId, templateId, templateParams, {
+        publicKey: publicKey,
+      });
 
       setStatus('success');
       setFeedbackMessage("Message sent successfully. I'll get back to you soon.");
