@@ -59,13 +59,20 @@ export default function Contact() {
 
     // Environment variables
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_dgdrjys';
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_zhdafat';
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!publicKey) {
+      console.warn('VITE_EMAILJS_PUBLIC_KEY is not set in environment variables.');
+    }
 
     try {
       const templateParams = {
+        name: from_name.trim(),
         from_name: from_name.trim(),
+        email: from_email.trim(),
         from_email: from_email.trim(),
+        title: subject.trim(),
         subject: subject.trim(),
         message: message.trim(),
         reply_to: from_email.trim(),
@@ -84,9 +91,16 @@ export default function Contact() {
         message: '',
       });
     } catch (err) {
-      console.error('EmailJS Submission Error:', err);
+      console.error('EmailJS Submission Error:', {
+        status: err?.status,
+        text: err?.text,
+        message: err?.message,
+        error: err,
+      });
       setStatus('error');
-      setFeedbackMessage('Unable to send message. Please try again.');
+      setFeedbackMessage(
+        `Unable to send message. Please try again or reach out directly at ${profileData.email}`
+      );
     } finally {
       setIsSubmitting(false);
     }
