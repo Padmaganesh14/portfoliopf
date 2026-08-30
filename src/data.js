@@ -299,6 +299,16 @@ export const profileData = {
             description: "Fundamental training in responsive frontend engineering, semantic web markup, modern CSS styling, and client-server architecture."
         },
         {
+            title: "IBM Generative AI Engineering",
+            issuer: "IBM SkillsBuild",
+            year: "2026",
+            category: "Cloud & AI",
+            image: "/certificates/IBM GEN AI_page-0001.jpg",
+            fallbackImage: "/certificate/IBM GEN AI_page-0001.jpg",
+            file: "/certificates/IBM GEN AI.pdf",
+            description: "Specialized credentials in Generative AI engineering, LLM architecture, foundation models, prompt engineering, and intelligent AI application workflows."
+        },
+        {
             title: "RDBMS PostgreSQL Training",
             issuer: "EduPyramids, SINE, IIT Bombay",
             year: "2026",
