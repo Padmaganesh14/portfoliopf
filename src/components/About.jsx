@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { profileData } from '../data';
-import { GraduationCap, Code, Copy, Check, Terminal, Sparkles } from 'lucide-react';
+import { GraduationCap, Code, Copy, Check, Terminal } from 'lucide-react';
 import { useState } from 'react';
 
 const codeSnippet = `const developer = {
@@ -112,7 +112,7 @@ export default function About() {
             {/* Bio Card */}
             <div className="dev-card p-6 sm:p-7 bg-[#0D1117]/90 border-white/[0.08]">
               <h3 className="text-base sm:text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
-                <Sparkles size={18} className="text-[#8B5CF6]" />
+                <Terminal size={16} className="text-[#8B5CF6]" />
                 <span>Background &amp; Philosophy</span>
               </h3>
               <p className="text-slate-300 text-sm leading-relaxed mb-4">
